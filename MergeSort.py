@@ -5,11 +5,12 @@ def MergeSort(array):
     # base case
     if len(array) <= 1:
         return array
-    midpoint = len(array) // 2
-    left_array = array[:midpoint]
-    right_array = array[midpoint:]
-    left, right = MergeSort(left_array), MergeSort(right_array)
-    return merge(left, right, array.copy())
+    else:
+        midpoint = len(array) // 2
+        left_array = array[:midpoint]
+        right_array = array[midpoint:]
+        left, right = MergeSort(left_array), MergeSort(right_array)
+        return merge(left, right, array.copy())
 
 # merge subroutine
 def merge(left, right, merged):
