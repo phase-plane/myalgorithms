@@ -35,4 +35,5 @@ def merge(left, right, merged):
     return merged
 
 # test
-print(MergeSort(testArray))
+if __name__ == '__main__':
+    print(MergeSort(testArray))
