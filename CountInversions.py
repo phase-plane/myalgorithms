@@ -1,5 +1,4 @@
 # modify MergeSort to count the number of inversions in an array
-# sort and merge an array
 def SimpleInvCount(array):
     """complexity O(n**2)"""
     count = 0
@@ -21,43 +20,39 @@ def SortCountInv(array):
         midpoint = len(array) // 2
         leftArray = array[:midpoint]
         rightArray = array[midpoint:]
-        # left, right = MergeSort(left_array), MergeSort(right_array)
-        # return merge(left, right, array.copy())
-        sortedLeft, leftInv = SortCountInv(leftArray)
-        sortedRight, rightInv = SortCountInv(rightArray)
-        mergedResult, splitInv = MergeCountSplitInv(sortedLeft, sortedRight, array.copy())
+        left, leftInv = SortCountInv(leftArray)
+        right, rightInv = SortCountInv(rightArray)
+        mergedResult, splitInv = MergeCountSplitInv(left, right, array.copy())
         return mergedResult, leftInv + rightInv + splitInv
 
-
 # merge and count split inversions subroutine
-def MergeCountSplitInv(C, D, merged):
+def MergeCountSplitInv(left, right, merged):
     """complexity O(n)"""
     # initialise indices
     i = 0
     j = 0
-    n = len(C) + len(D)
     splitInv = 0
-    while i < len(C) and j < len(D):
-        if C[i] <= D[j]:
-            merged[i + j] = C[i]
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            merged[i + j] = left[i]
             i += 1
         else:
-            merged[i + j] = D[j]
+            merged[i + j] = right[j]
+            splitInv += (len(left) - i)
             j += 1
-            splitInv = splitInv + (n / 2 - i + 1)
 
     # copy leftovers
-    for i in range(i, len(C)):
-        merged[i + j] = C[i]
+    for i in range(i, len(left)):
+        merged[i + j] = left[i]
 
-    for j in range(j, len(D)):
-        merged[i + j] = D[j]
+    for j in range(j, len(right)):
+        merged[i + j] = right[j]
+
     return merged, splitInv
-
 
 # test
 if __name__ == '__main__':
-    with open("testArray.txt", "r") as file:
-        lines = file.readlines()  # lines is now a list with 100 000 elements
-        print(SortCountInv(lines))
+    with open("IntegerArray.txt", "r") as file:
+        integers = [int(i.strip()) for i in file.readlines()]  # integers is now a list with 100 000 elements
+        print(SortCountInv(integers)[1])
     file.close()
